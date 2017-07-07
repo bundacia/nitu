@@ -11,6 +11,11 @@ const port = process.env.PORT || 3000
 
 const app = express()
 
+// app.set takes 2 parameters, but your calling it here with 1.
+// I think you meant this:
+// app.set('views', path.join(__dirname, 'views'))
+// However, since your views are being stored in the default location,
+// you can remove this line altogether.
 app.set(path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
 
@@ -26,6 +31,9 @@ app.use('/admin', admin)
 
 app.use((err, req, res, next) => {
   console.error(err.stack)
+  // You can't pass multiple sring arguments to send this way to
+  // have them joined together. Do this instead:
+  // res.status('500').send(`There was an ERROR: ${err}`)
   res.status('500').send('There was an ERROR: ', err)
 })
 

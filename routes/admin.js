@@ -15,6 +15,11 @@ const isLoggedIn = (req, res, next) => {
   }
 }
 
+// Having two functions named isLoggedIn and loggedIn is a little confusing.
+// They sound the same but do different things. Maybe isLoggedIn should be
+// renamed `requireLoggedInUser` and loggedIn should be called
+// `redirectLoggedInUser` or something like that.
+
 // avoids rendering login page if already logged in
 // this is only used for /login, should it live there?
 const loggedIn = (req, res, next) => {
@@ -37,6 +42,7 @@ router.get('/posts', isLoggedIn, (req, res) => {
     })
     .catch(error => {
       console.error('error retrieving posts:', error)
+      // you could also just call next(error) here to hit your catch-all error handler
       res.redirect('/admin')
     })
 })
